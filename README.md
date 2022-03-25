@@ -2,7 +2,7 @@
 Premium Damage Indicators Plugin
 
 
-[MEDIA=youtube]VXFuBi2UGaQ[/MEDIA]
+[Game Process](https://www.youtube.com/watch?v=VXFuBi2UGaQ)
 
 Are you looking for something a little bit extra to make your SMP feel unique? DamageIndicatorsPlus adds very cool holograms that display the amount of damage done to players and other entities. As well as displaying the amount of health a player is healing! Many configurable options!
 
