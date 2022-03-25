@@ -8,6 +8,8 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.MultiLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -17,6 +19,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 public final class DamageIndicatorsPlus extends JavaPlugin {
@@ -102,6 +107,17 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         }
 
         logger.info("Time elapsed: " + (System.currentTimeMillis() - startTimeMili) + "ms");
+
+        Metrics metrics = new Metrics(this, 14743);
+        metrics.addCustomChart(new MultiLineChart("players_and_servers", new Callable<Map<String, Integer>>() {
+            @Override
+            public Map<String, Integer> call() throws Exception {
+                Map<String, Integer> valueMap = new HashMap<>();
+                valueMap.put("servers", 1);
+                valueMap.put("players", Bukkit.getOnlinePlayers().size());
+                return valueMap;
+            }
+        }));
     }
 
     @Override
