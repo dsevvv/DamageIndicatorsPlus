@@ -8,11 +8,11 @@ RECCOMENDED: I highly recommend using [Paper](https://papermc.io/) and [Protocol
 
 # Features
 
-Creates Hologram That Displays Damage Done to Entities
-Creates Hologram That Displayers Health Gained by Players
-Adds particle effects to damage events.
-Adds particle effects to heal events.
-Configure many options of the above features!
+* Creates Hologram That Displays Damage Done to Entities
+* Creates Hologram That Displayers Health Gained by Players
+* Adds particle effects to damage events.
+* Adds particle effects to heal events.
+* Configure many options of the above features!
 
 # Support
 
