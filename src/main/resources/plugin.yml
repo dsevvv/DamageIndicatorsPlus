@@ -1,0 +1,9 @@
+name: DamageIndicatorsPlus
+version: '${project.version}'
+main: ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus
+api-version: 1.18
+softdepend:
+  - ProtocolLib
+authors: [ dsevvv ]
+description: DamageIndicators premium version, comes with config and many more features!
+website: github.com/dsevvv/damageindicatorsplus

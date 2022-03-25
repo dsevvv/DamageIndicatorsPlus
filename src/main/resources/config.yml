@@ -1,0 +1,46 @@
+# DamageIndicatorsPlus by dsevvv
+# Spigot page:
+
+############################################################
+# +------------------------------------------------------+ #
+# |                    Damage Indicators                 | #
+# +------------------------------------------------------+ #
+############################################################
+# Bukkit colors are compatible with text. Please use '&' as the selector. - https://static.planetminecraft.com/files/resource_media/screenshot/1807/example2-1518839184.png
+damage-indicator:
+  enabled: true                     #false to disable damage holograms
+  indicator-message: "&c-"          #message that appears in the hologram before the damage amount
+  critical-message: "&4&l&oCrit!"   #extra message that appears when the damage is a critical hit
+  lifespan: 1                       #lifespan of hologram in seconds
+  velocity:
+    horizontal: 0.25                #horizonal range for hologram velocity
+    vertical: 0.15                  #vertical range for hologram velocity
+  particle:
+    enabled: true                   #false to disable particles for damage holograms
+    particle-type: REDSTONE         #particle type, please use from this list in ALL CAPS - https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html
+    particle-count: 30              #number of particles created with hologram
+    loc-x: 0                        #moves center of particle cluster on x-axis
+    loc-y: .5                       #moves center of particle cluster on y-axis
+    loc-z: 0                        #moves center of particle cluster on z-axis
+    offset-x: .5                    #offset range for individual particles within the cluster on x-axis
+    offset-y: .5                    #offset range for individual particles within the cluster on y-axis
+    offset-z: .5                    #offset range for individual particles within the cluster on z-axis
+
+
+############################################################
+# +------------------------------------------------------+ #
+# |                    Heal Indicators                   | #
+# +------------------------------------------------------+ #
+############################################################
+# Bukkit colors are compatible with text. Please use '&' as the selector. - https://static.planetminecraft.com/files/resource_media/screenshot/1807/example2-1518839184.png
+heal-indicator:
+  enabled: true                     #false to disable heal holograms
+  indicator-message: "&a+"          #message that appears in the hologram before the heal amount
+  lifespan: 1                       #lifespan of hologram in seconds
+  offset:
+    x: .5                           #offset for hologram spawn location on x-axis
+    y: .5                           #offset for hologram spawn location on y-axis
+    z: .5                           #offset for hologram spawn location on z-axis
+  particle:
+    enabled: true                   #false to disable particles for heal holograms
+
