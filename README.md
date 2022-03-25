@@ -17,3 +17,5 @@ RECCOMENDED: I highly recommend using [Paper](https://papermc.io/) and [Protocol
 # Support
 
 I am working on creating a discord server that will verify spigot users. For now please post in this plugin's discussion with any issues.
+
+![alt text](https://bstats.org/signatures/bukkit/DamageIndicatorsPlus.svg)
