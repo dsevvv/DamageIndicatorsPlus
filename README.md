@@ -4,7 +4,7 @@ Are you looking for something a little bit extra to make your SMP feel unique? D
 
 There are currently NO COMMANDS OR PERMISSIONS associated with this plugin, you can simply drop this into your plugins folder and you're good to go!
 
-RECCOMENDED: I highly recommend using Paper and ProtocolLib. These are both optional dependencies, but if you have them both it will GREATLY improve the feel and performance of the plugin.
+RECCOMENDED: I highly recommend using [Paper](https://papermc.io/) and [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/). These are both optional dependencies, but if you have them both it will GREATLY improve the feel and performance of the plugin.
 
 # Features
 
