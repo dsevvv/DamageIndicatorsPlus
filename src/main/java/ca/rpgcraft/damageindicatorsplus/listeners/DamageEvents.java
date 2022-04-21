@@ -12,9 +12,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public record DamageEvents(DamageIndicatorsPlus plugin,
-                           GenerateVectorTask generateVectorTask,
-                           HologramManager hologramManager) implements Listener {
+public class DamageEvents implements Listener {
+
+    private final DamageIndicatorsPlus plugin;
+    private final GenerateVectorTask generateVectorTask;
+    private final HologramManager hologramManager;
+
+    public DamageEvents(DamageIndicatorsPlus plugin,
+                        GenerateVectorTask generateVectorTask,
+                        HologramManager hologramManager){
+        this.plugin = plugin;
+        this.generateVectorTask = generateVectorTask;
+        this.hologramManager = hologramManager;
+
+    }
 
     @EventHandler
     void onPlayerDamageEvent(EntityDamageEvent e) {

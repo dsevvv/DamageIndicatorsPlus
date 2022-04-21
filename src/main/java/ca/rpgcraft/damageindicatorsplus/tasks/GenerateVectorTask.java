@@ -22,9 +22,23 @@ public class GenerateVectorTask {
         double vertRange = plugin.getConfig().contains("damage-indicator.velocity.vertical") ?
                 plugin.getConfig().getDouble("damage-indicator.velocity.vertical") : .15;
 
-        double x = rand.nextInt(2) == 0 ? rand.nextDouble(horiRange) : -rand.nextDouble(horiRange);
-        double y = rand.nextDouble(vertRange)+.1;
-        double z = rand.nextInt(2) == 0 ? rand.nextDouble(horiRange) : -rand.nextDouble(horiRange);
+        double horiRangeUp = horiRange * 100;
+        double vertRangeUp = vertRange * 100;
+
+        int horiRangeInt = (int) horiRangeUp;
+        int vertRangeInt = (int) vertRangeUp;
+
+        int xInt = rand.nextInt(2) == 0 ? rand.nextInt(horiRangeInt) : -rand.nextInt(horiRangeInt);
+        int yInt = rand.nextInt(vertRangeInt)+1;
+        int zInt = rand.nextInt(2) == 0 ? rand.nextInt(horiRangeInt) : -rand.nextInt(horiRangeInt);
+
+        double xDouble = xInt;
+        double yDouble = yInt;
+        double zDouble = zInt;
+
+        double x = xDouble / 75;
+        double y = yDouble / 35;
+        double z = zDouble / 75;
 
         return new Vector(x, y, z);
     }

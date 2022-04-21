@@ -8,11 +8,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.persistence.PersistentDataType;
 
-public record BurnListenerSpigot(DamageIndicatorsPlus plugin) implements Listener {
+public class BurnListenerSpigot implements Listener {
+
+    private final DamageIndicatorsPlus plugin;
+
+    public BurnListenerSpigot(DamageIndicatorsPlus plugin){
+        this.plugin = plugin;
+    }
 
     @EventHandler
     void onHologramBurn(EntityDamageEvent e) {
-        if (!(e.getEntity() instanceof ArmorStand hologram)) return;
+        if (!(e.getEntity() instanceof ArmorStand)) return;
+
+        ArmorStand hologram = (ArmorStand) e.getEntity();
 
         if (!hologram.getPersistentDataContainer()
                 .has(new NamespacedKey(plugin, "hologram"), PersistentDataType.STRING)) return;
