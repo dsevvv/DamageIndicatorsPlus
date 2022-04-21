@@ -9,9 +9,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
-public record HealEvents(DamageIndicatorsPlus plugin,
-                         GenerateVectorTask generateVectorTask,
-                         HologramManager hologramManager) implements Listener {
+public class HealEvents implements Listener {
+
+    private final DamageIndicatorsPlus plugin;
+    private final GenerateVectorTask generateVectorTask;
+    private final HologramManager hologramManager;
+
+    public HealEvents(DamageIndicatorsPlus plugin,
+                      GenerateVectorTask generateVectorTask,
+                      HologramManager hologramManager){
+        this.plugin = plugin;
+        this.generateVectorTask = generateVectorTask;
+        this.hologramManager = hologramManager;
+    }
 
     @EventHandler
     public void onPlayerHealEvent(EntityRegainHealthEvent e) {

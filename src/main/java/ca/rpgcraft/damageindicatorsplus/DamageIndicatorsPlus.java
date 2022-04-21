@@ -67,7 +67,8 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
                     int entityID = packet.getIntegers().read(0);
                     Entity entity = ProtocolLibrary.getProtocolManager().getEntityFromID(p.getWorld(), entityID);
 
-                    if(!(entity instanceof ArmorStand hologram)) return;
+                    if(!(entity instanceof ArmorStand)) return;
+                    ArmorStand hologram = (ArmorStand) entity;
                     if(!(hologram.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.BEEHIVE))) return;
 
                     hologram.setVisible(false);
