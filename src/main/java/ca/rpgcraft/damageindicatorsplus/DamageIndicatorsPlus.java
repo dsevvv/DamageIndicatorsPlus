@@ -109,16 +109,20 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
         logger.info("Time elapsed: " + (System.currentTimeMillis() - startTimeMili) + "ms");
 
-        Metrics metrics = new Metrics(this, 14743);
-        metrics.addCustomChart(new MultiLineChart("players_and_servers", new Callable<Map<String, Integer>>() {
-            @Override
-            public Map<String, Integer> call() throws Exception {
-                Map<String, Integer> valueMap = new HashMap<>();
-                valueMap.put("servers", 1);
-                valueMap.put("players", Bukkit.getOnlinePlayers().size());
-                return valueMap;
-            }
-        }));
+        try{
+            Metrics metrics = new Metrics(this, 14743);
+            metrics.addCustomChart(new MultiLineChart("players_and_servers", new Callable<Map<String, Integer>>() {
+                @Override
+                public Map<String, Integer> call() throws Exception {
+                    Map<String, Integer> valueMap = new HashMap<>();
+                    valueMap.put("servers", 1);
+                    valueMap.put("players", Bukkit.getOnlinePlayers().size());
+                    return valueMap;
+                }
+            }));
+        }catch (NoClassDefFoundError ignored){
+            getLogger().severe("bstats disabled.");
+        }
     }
 
     @Override
