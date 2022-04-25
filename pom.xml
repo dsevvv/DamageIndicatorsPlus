@@ -6,7 +6,7 @@
 
     <groupId>ca.rpgcraft</groupId>
     <artifactId>DamageIndicatorsPlus</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.2</version>
     <packaging>jar</packaging>
 
     <name>DamageIndicatorsPlus</name>
@@ -25,32 +25,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.1</version>
-                <configuration>
-                    <outputDirectory>E:\Minecraft Servers\Old Versions\plugins</outputDirectory>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -67,8 +43,8 @@
                 </executions>
                 <configuration>
                     <obfuscate>true</obfuscate>
-                    <injar>original-DamageIndicatorsPlus-1.2.0.jar</injar>
-                    <outjar>${project.build.finalName}-proguard.jar</outjar>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}.jar</outjar>
                     <outputDirectory>${project.build.directory}</outputDirectory>
                     <proguardInclude>${basedir}/proguard.conf</proguardInclude>
                     <libs>
@@ -86,8 +62,9 @@
                         </option>
                         <option>-overloadaggressively</option>
                         <option>-repackageclasses</option>
-                        <option>-keepattributes *Annotation*, Override</option>
+                        <option>-keepattributes *Annotation*, Override, InnerClasses</option>
                         <option>-keep public class ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus</option>
+                        <option>-keepclassmembers public class ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus</option>
                     </options>
                 </configuration>
             </plugin>

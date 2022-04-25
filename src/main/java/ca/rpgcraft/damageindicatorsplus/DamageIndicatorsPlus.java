@@ -3,18 +3,12 @@ package ca.rpgcraft.damageindicatorsplus;
 import ca.rpgcraft.damageindicatorsplus.listeners.*;
 import ca.rpgcraft.damageindicatorsplus.tasks.GenerateVectorTask;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
+
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.MultiLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.CreatureSpawnEvent;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.MalformedURLException;
@@ -57,24 +51,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         }
 
         if(isProtocolLib){
-            getLogger().info("ProtocolLib found.");
-            ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
-                @Override
-                public void onPacketSending(PacketEvent event) {
-                    PacketContainer packet = event.getPacket();
-                    Player p = event.getPlayer();
-
-                    int entityID = packet.getIntegers().read(0);
-                    Entity entity = ProtocolLibrary.getProtocolManager().getEntityFromID(p.getWorld(), entityID);
-
-                    if(!(entity instanceof ArmorStand)) return;
-                    ArmorStand hologram = (ArmorStand) entity;
-                    if(!(hologram.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.BEEHIVE))) return;
-
-                    hologram.setVisible(false);
-                    hologram.setVelocity(generateVectorTask.generateVector());
-                }
-            });
+            new ProtocolLibHandler(this, generateVectorTask);
         }
 
         logger.info("Registering listeners.");
@@ -112,7 +89,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         Metrics metrics = new Metrics(this, 14743);
         metrics.addCustomChart(new MultiLineChart("players_and_servers", new Callable<Map<String, Integer>>() {
             @Override
-            public Map<String, Integer> call() throws Exception {
+            public Map<String, Integer> call() {
                 Map<String, Integer> valueMap = new HashMap<>();
                 valueMap.put("servers", 1);
                 valueMap.put("players", Bukkit.getOnlinePlayers().size());

@@ -93,12 +93,24 @@ public class CreateHologramTask extends BukkitRunnable {
                 double offZ = plugin.getConfig().contains("heal-indicator.particle.offset.z") ?
                         plugin.getConfig().getDouble("heal-indicator.particle.offset.z") : .5;
 
-                offX = rand.nextInt(2 ) == 0 ? rand.nextDouble(offX)+.1 : -rand.nextDouble(offX)+.1;
-                offZ = rand.nextInt(2 ) == 0 ? rand.nextDouble(offZ)+.1 : -rand.nextDouble(offZ)+.1;
-                offY = rand.nextDouble(offY)+1.0;
+                double offXUp = offX * 100;
+                double offYUp = offY * 100;
+                double offZUp = offZ * 100;
+
+                int offXInt = (int) offXUp;
+                int offYInt = (int) offYUp;
+                int offZInt = (int) offZUp;
+
+                int randX = rand.nextInt(2 ) == 0 ? rand.nextInt(offXInt)+10 : -rand.nextInt(offXInt)+10;
+                int randZ = rand.nextInt(2 ) == 0 ? rand.nextInt(offZInt)+10 : -rand.nextInt(offZInt)+10;
+                int randY = rand.nextInt(offYInt)+10;
+
+                double x = (double) randX / 100;
+                double y = (double) randY / 100;
+                double z = (double) randZ / 100;
 
                 ArmorStand hologram = plugin.isPaper() ?
-                        (ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(offX, offY, offZ), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.BEEHIVE) : (ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND);
+                        (ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(x, y, z), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.BEEHIVE) : (ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND);
 
                 prepareHologram(hologram);
                 hologram.setGravity(false);
