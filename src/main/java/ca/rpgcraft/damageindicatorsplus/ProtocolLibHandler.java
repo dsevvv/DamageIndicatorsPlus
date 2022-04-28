@@ -31,6 +31,9 @@ public class ProtocolLibHandler {
                 Player p = event.getPlayer();
 
                 int entityID = packet.getIntegers().read(0);
+                if(entityID < 0){
+                    return;
+                }
                 Entity entity = ProtocolLibrary.getProtocolManager().getEntityFromID(p.getWorld(), entityID);
 
                 if(!(entity instanceof ArmorStand)) return;
