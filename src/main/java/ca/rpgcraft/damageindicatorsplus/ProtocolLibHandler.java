@@ -38,7 +38,7 @@ public class ProtocolLibHandler {
 
                 if(!(entity instanceof ArmorStand)) return;
                 ArmorStand hologram = (ArmorStand) entity;
-                if(!(hologram.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.BEEHIVE))) return;
+                if(!(hologram.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.CUSTOM))) return;
 
                 hologram.setVisible(false);
                 hologram.setVelocity(generateVectorTask.generateVector());

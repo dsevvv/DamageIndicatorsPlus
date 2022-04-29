@@ -6,7 +6,7 @@
 
     <groupId>ca.rpgcraft</groupId>
     <artifactId>DamageIndicatorsPlus</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <packaging>jar</packaging>
 
     <name>DamageIndicatorsPlus</name>
@@ -52,6 +52,7 @@
                         <lib>${java.home}/jmods/java.logging.jmod</lib>
                     </libs>
                     <options>
+                        <option>-verbose</option>
                         <option>-dontnote module-info</option>
                         <option>-dontnote jdk.internal.jimage.*</option>
                         <option>-dontnote jdk.internal.jimage.decompressor.*</option>
@@ -62,9 +63,11 @@
                         </option>
                         <option>-overloadaggressively</option>
                         <option>-repackageclasses</option>
-                        <option>-keepattributes *Annotation*, Override, InnerClasses</option>
+                        <option>-keepattributes *Annotation*, Override, InnerClasses, Exceptions, Signature, SourceFile, LineNumberTable</option>
                         <option>-keep public class ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus</option>
                         <option>-keepclassmembers public class ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus</option>
+                        <option>-printmapping proguard_map_di_plus</option>
+                        <option>-applymapping proguard_map_di_plus</option>
                     </options>
                 </configuration>
             </plugin>

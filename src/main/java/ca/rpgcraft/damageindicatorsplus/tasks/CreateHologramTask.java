@@ -62,7 +62,7 @@ public class CreateHologramTask extends BukkitRunnable {
         Entity victim = entityDamageEvent.getEntity();
 
         ArmorStand hologram = plugin.isPaper() ?
-                (ArmorStand) victim.getWorld().spawnEntity(victim.getLocation(), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.BEEHIVE) : (ArmorStand) victim.getWorld().spawnEntity(victim.getLocation(), EntityType.ARMOR_STAND);
+                (ArmorStand) victim.getWorld().spawnEntity(victim.getLocation(), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM) : (ArmorStand) victim.getWorld().spawnEntity(victim.getLocation(), EntityType.ARMOR_STAND);
 
         prepareHologram(hologram);
         hologram.setCustomName(hologramName(dmgFinal));
@@ -110,7 +110,7 @@ public class CreateHologramTask extends BukkitRunnable {
                 double z = (double) randZ / 100;
 
                 ArmorStand hologram = plugin.isPaper() ?
-                        (ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(x, y, z), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.BEEHIVE) : (ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND);
+                        (ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(x, y, z), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM) : (ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND);
 
                 prepareHologram(hologram);
                 hologram.setGravity(false);
