@@ -1,5 +1,5 @@
 # DamageIndicatorsPlus by dsevvv
-# Spigot page:
+# Spigot page: https://www.spigotmc.org/resources/50-off-%E2%9A%94%EF%B8%8F-damage-indicators-plus-%E2%9A%94%EF%B8%8F-combat-holograms-%E2%9C%85-high-performance-%E2%9C%A8-configurable-%E2%AD%95.100949/
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -9,6 +9,9 @@
 # Bukkit colors are compatible with text. Please use '&' as the selector. - https://static.planetminecraft.com/files/resource_media/screenshot/1807/example2-1518839184.png
 damage-indicator:
   enabled: true                     #false to disable damage holograms
+  sweeping-edge: false              #false to disable damage holograms for mobs hit by sweeping edge damage (may improve performance)
+  players: true                     #false to disable damage holograms on player damage
+  mobs: true                        #false to disable damage holograms on mob damage
   indicator-message: "&c-"          #message that appears in the hologram before the damage amount
   critical-message: "&4&l&oCrit!"   #extra message that appears when the damage is a critical hit
   lifespan: 1                       #lifespan of hologram in seconds

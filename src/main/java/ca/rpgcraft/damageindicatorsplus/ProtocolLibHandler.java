@@ -1,6 +1,7 @@
 package ca.rpgcraft.damageindicatorsplus;
 
 import ca.rpgcraft.damageindicatorsplus.tasks.GenerateVectorTask;
+import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -15,10 +16,12 @@ public class ProtocolLibHandler {
 
     private final DamageIndicatorsPlus plugin;
     private final GenerateVectorTask generateVectorTask;
+    private final HologramManager hologramManager;
 
-    public ProtocolLibHandler(DamageIndicatorsPlus plugin, GenerateVectorTask generateVectorTask){
+    public ProtocolLibHandler(DamageIndicatorsPlus plugin, GenerateVectorTask generateVectorTask, HologramManager hologramManager){
         this.plugin = plugin;
         this.generateVectorTask = generateVectorTask;
+        this.hologramManager = hologramManager;
         initProtocolLib();
     }
 

@@ -61,8 +61,13 @@ public class CreateHologramTask extends BukkitRunnable {
         double dmgFinal = entityDamageEvent.getFinalDamage();
         Entity victim = entityDamageEvent.getEntity();
 
-        ArmorStand hologram = plugin.isPaper() ?
-                (ArmorStand) victim.getWorld().spawnEntity(victim.getLocation(), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM) : (ArmorStand) victim.getWorld().spawnEntity(victim.getLocation(), EntityType.ARMOR_STAND);
+        ArmorStand hologram;
+
+        if(plugin.isPaper()){
+            hologram = hologramManager.addHologram((ArmorStand) victim.getWorld().spawnEntity(victim.getLocation(), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM));
+        }else{
+            hologram = hologramManager.addHologram((ArmorStand) victim.getWorld().spawnEntity(victim.getLocation(), EntityType.ARMOR_STAND));
+        }
 
         prepareHologram(hologram);
         hologram.setCustomName(hologramName(dmgFinal));
@@ -109,8 +114,13 @@ public class CreateHologramTask extends BukkitRunnable {
                 double y = (double) randY / 100;
                 double z = (double) randZ / 100;
 
-                ArmorStand hologram = plugin.isPaper() ?
-                        (ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(x, y, z), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM) : (ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND);
+                ArmorStand hologram;
+
+                if(plugin.isPaper()){
+                    hologram = hologramManager.addHologram((ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(x, y, z), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM));
+                }else{
+                    hologram = hologramManager.addHologram((ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND));
+                }
 
                 prepareHologram(hologram);
                 hologram.setGravity(false);
@@ -166,7 +176,6 @@ public class CreateHologramTask extends BukkitRunnable {
         hologram.setRightLegPose(EulerAngle.ZERO.add(180, 0, 0));
         hologram.setInvulnerable(true);
         hologram.setCustomNameVisible(true);
-        hologramManager.addHologram(hologram);
     }
 
     private void spawnParticle(Entity victim){

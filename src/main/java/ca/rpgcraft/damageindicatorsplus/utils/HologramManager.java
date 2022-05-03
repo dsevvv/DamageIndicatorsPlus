@@ -19,9 +19,10 @@ public class HologramManager {
         return hologramList;
     }
 
-    public void addHologram(ArmorStand hologram)
+    public ArmorStand addHologram(ArmorStand hologram)
     {
         hologramList.put(hologram.getUniqueId(), hologram);
+        return hologram;
     }
 
     public void removeHologram(ArmorStand hologram) {
