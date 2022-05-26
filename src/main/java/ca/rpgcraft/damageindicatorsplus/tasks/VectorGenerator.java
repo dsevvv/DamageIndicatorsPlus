@@ -6,17 +6,17 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class GenerateVectorTask {
+public class VectorGenerator {
 
-    private Random rand;
     private final DamageIndicatorsPlus plugin;
 
-    public GenerateVectorTask(DamageIndicatorsPlus plugin) {
+    public VectorGenerator(DamageIndicatorsPlus plugin) {
         this.plugin = plugin;
-        rand = new Random();
     }
 
-    public Vector generateVector(){
+    public Vector getVector(){
+        Random rand = new Random();
+
         double horiRange = plugin.getConfig().contains("damage-indicator.velocity.horizontal") ?
                 plugin.getConfig().getDouble("damage-indicator.velocity.horizontal") : .25;
         double vertRange = plugin.getConfig().contains("damage-indicator.velocity.vertical") ?

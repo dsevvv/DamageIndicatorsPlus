@@ -1,9 +1,12 @@
 package ca.rpgcraft.damageindicatorsplus;
 
+import ca.rpgcraft.damageindicatorsplus.command.Commands;
 import ca.rpgcraft.damageindicatorsplus.listeners.*;
-import ca.rpgcraft.damageindicatorsplus.tasks.GenerateVectorTask;
+import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
 
+import ca.rpgcraft.damageindicatorsplus.utils.PlayerDataManager;
+import ca.rpgcraft.damageindicatorsplus.utils.VectorRingBuffer;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.MultiLineChart;
 import org.bukkit.Bukkit;
@@ -17,12 +20,15 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class DamageIndicatorsPlus extends JavaPlugin {
 
+    private final PlayerDataManager playerDataManager = new PlayerDataManager(this);
     private final HologramManager hologramManager = new HologramManager();
-    private final GenerateVectorTask generateVectorTask = new GenerateVectorTask(this);
+    private final VectorGenerator vectorGenerator = new VectorGenerator(this);
+    private VectorRingBuffer ringBuffer;
 
     private boolean isPaper;
     private boolean isProtocolLib;
@@ -40,28 +46,47 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
         saveDefaultConfig();
         fillMissingConfigBlocks();
+        playerDataManager.saveDefaultPlayerConfig();
 
         logger.info("Checking for Paper and ProtocolLib.");
 
         //checking for a paper server, if a paper server is detected, will check for ProtocolLib
-        try {
-            Class.forName("io.papermc.paper.event.player.PlayerArmSwingEvent");
-            logger.info("Paper API found.");
-            isProtocolLib = Bukkit.getPluginManager().isPluginEnabled("ProtocolLib");
-            isPaper = true;
-            if(isProtocolLib){
-                new ProtocolLibHandler(this, generateVectorTask, hologramManager);
+        boolean tryPaper = false;
+        try{
+            Class.forName("com.mohistmc.MohistMC");
+            logger.info("Mohist found.");
+        }catch (ClassNotFoundException e){
+            tryPaper = true;
+            logger.info("Mohist not found.");
+        }
+        if(tryPaper){
+            try {
+                Class.forName("io.papermc.paper.event.player.PlayerArmSwingEvent");
+                logger.info("Paper API found.");
+                isProtocolLib = Bukkit.getPluginManager().isPluginEnabled("ProtocolLib");
+                isPaper = true;
+                if(isProtocolLib){
+                    new ProtocolLibHandler(this, vectorGenerator, hologramManager);
+                }
+            }catch (Exception ignored){
+                getLogger().info("Paper API not found.");
+                isProtocolLib = false;
+                isPaper = false;
             }
-        }catch (Exception ignored){
-            getLogger().info("Paper API not found.");
-            isProtocolLib = false;
-            isPaper = false;
         }
 
-        logger.info("Registering listeners.");
+        logger.log(Level.INFO, "Initializing vector generation...");
+        VectorGenerator vectorGenerator = new VectorGenerator(this);
+        ringBuffer = new VectorRingBuffer(50, vectorGenerator);
 
+        logger.info("Registering listeners.");
         registerListeners();
         registerBStats();
+
+        logger.info("Registering commands.");
+        Commands commands = new Commands(this);
+        getCommand("di").setExecutor(commands);
+        getCommand("di").setTabCompleter(commands);
 
         logger.info("Time elapsed: " + (System.currentTimeMillis() - startTimeMili) + "ms");
     }
@@ -93,7 +118,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         //checking config if heal indicators should be enabled
         if(getConfig().getBoolean("heal-indicator.enabled")){
             logger.info("Heal Indicator Enabled.");
-            Bukkit.getPluginManager().registerEvents(new HealEvents(this, generateVectorTask, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new HealEvents(this, vectorGenerator, hologramManager), this);
         }else{
             logger.info("Heal Indicator Disabled.");
         }
@@ -102,14 +127,14 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
     private void enableDamageIndicators(){
         //checking if player indicators are enabled
         if(getConfig().getBoolean("damage-indicator.players")){
-            Bukkit.getPluginManager().registerEvents(new PlayerDamage(this, generateVectorTask, hologramManager), this);
-            Bukkit.getPluginManager().registerEvents(new EntityOnPlayerDamage(this, generateVectorTask, hologramManager), this);
-            Bukkit.getPluginManager().registerEvents(new PlayerOnPlayerDamage(this, generateVectorTask, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new PlayerDamage(this, vectorGenerator, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new EntityOnPlayerDamage(this, vectorGenerator, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new PlayerOnPlayerDamage(this, vectorGenerator, hologramManager), this);
         }
         //checking if mob indicators are enabled
         if(getConfig().getBoolean("damage-indicator.mobs")){
-            Bukkit.getPluginManager().registerEvents(new EntityOnEntityDamage(this, generateVectorTask, hologramManager), this);
-            Bukkit.getPluginManager().registerEvents(new PlayerOnEntityDamage(this, generateVectorTask, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new EntityOnEntityDamage(this, vectorGenerator, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new PlayerOnEntityDamage(this, vectorGenerator, hologramManager), this);
         }
     }
 
@@ -160,5 +185,13 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
     public boolean isProtocolLib() {
         return isProtocolLib;
+    }
+
+    public PlayerDataManager getPlayerDataManager() {
+        return playerDataManager;
+    }
+
+    public VectorRingBuffer getRingBuffer() {
+        return ringBuffer;
     }
 }

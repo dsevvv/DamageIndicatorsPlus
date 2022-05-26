@@ -23,32 +23,32 @@ public class CreateHologramTask extends BukkitRunnable {
     private final DamageIndicatorsPlus plugin;
     private EntityDamageEvent entityDamageEvent;
     private EntityRegainHealthEvent entityHealEvent;
-    private final GenerateVectorTask generateVectorTask;
+    private final VectorGenerator vectorGenerator;
     private final HologramManager hologramManager;
     private final Random rand = new Random();
     private final DecimalFormat decimalFormat = new DecimalFormat("#0.0");
 
     private Player playerDamager = null;
 
-    public CreateHologramTask(DamageIndicatorsPlus plugin, GenerateVectorTask generateVectorTask, EntityDamageEvent e, HologramManager hologramManager) {
+    public CreateHologramTask(DamageIndicatorsPlus plugin, VectorGenerator vectorGenerator, EntityDamageEvent e, HologramManager hologramManager) {
         this.plugin = plugin;
         this.entityDamageEvent = e;
-        this.generateVectorTask = generateVectorTask;
+        this.vectorGenerator = vectorGenerator;
         this.hologramManager = hologramManager;
     }
 
-    public CreateHologramTask(DamageIndicatorsPlus plugin, GenerateVectorTask generateVectorTask, EntityDamageEvent e, Player playerDamager, HologramManager hologramManager) {
+    public CreateHologramTask(DamageIndicatorsPlus plugin, VectorGenerator vectorGenerator, EntityDamageEvent e, Player playerDamager, HologramManager hologramManager) {
         this.plugin = plugin;
         this.entityDamageEvent = e;
         this.playerDamager = playerDamager;
-        this.generateVectorTask = generateVectorTask;
+        this.vectorGenerator = vectorGenerator;
         this.hologramManager = hologramManager;
     }
 
-    public CreateHologramTask(DamageIndicatorsPlus plugin, GenerateVectorTask generateVectorTask, EntityRegainHealthEvent e, HologramManager hologramManager) {
+    public CreateHologramTask(DamageIndicatorsPlus plugin, VectorGenerator vectorGenerator, EntityRegainHealthEvent e, HologramManager hologramManager) {
         this.plugin = plugin;
         this.entityHealEvent = e;
-        this.generateVectorTask = generateVectorTask;
+        this.vectorGenerator = vectorGenerator;
         this.hologramManager = hologramManager;
     }
 
@@ -162,8 +162,8 @@ public class CreateHologramTask extends BukkitRunnable {
     private void prepareHologram(ArmorStand hologram){
         if(!plugin.isProtocolLib()){
             hologram.setVisible(false);
-            hologram.setVelocity(generateVectorTask.generateVector());
         }
+        hologram.setVelocity(plugin.getRingBuffer().getNext());
         hologram.getPersistentDataContainer().set(new NamespacedKey(plugin, "hologram"), PersistentDataType.STRING, "true");
         hologram.setBasePlate(false);
         hologram.setCollidable(false);

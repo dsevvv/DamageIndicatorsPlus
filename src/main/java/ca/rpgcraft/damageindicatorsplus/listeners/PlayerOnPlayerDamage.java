@@ -2,7 +2,7 @@ package ca.rpgcraft.damageindicatorsplus.listeners;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import ca.rpgcraft.damageindicatorsplus.tasks.CreateHologramTask;
-import ca.rpgcraft.damageindicatorsplus.tasks.GenerateVectorTask;
+import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
 import ca.rpgcraft.damageindicatorsplus.utils.DamageHologramUtils;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
 import org.bukkit.entity.Player;
@@ -14,14 +14,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class PlayerOnPlayerDamage implements Listener {
 
     private final DamageIndicatorsPlus plugin;
-    private final GenerateVectorTask generateVectorTask;
+    private final VectorGenerator vectorGenerator;
     private final HologramManager hologramManager;
 
     public PlayerOnPlayerDamage(DamageIndicatorsPlus plugin,
-                        GenerateVectorTask generateVectorTask,
+                        VectorGenerator vectorGenerator,
                         HologramManager hologramManager){
         this.plugin = plugin;
-        this.generateVectorTask = generateVectorTask;
+        this.vectorGenerator = vectorGenerator;
         this.hologramManager = hologramManager;
 
     }
@@ -35,7 +35,7 @@ public class PlayerOnPlayerDamage implements Listener {
             if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)) return;
         }
 
-        CreateHologramTask createHologramTask = new CreateHologramTask(plugin, generateVectorTask, e, (Player) e.getDamager(), hologramManager);
+        CreateHologramTask createHologramTask = new CreateHologramTask(plugin, vectorGenerator, e, (Player) e.getDamager(), hologramManager);
         createHologramTask.run();
     }
 }

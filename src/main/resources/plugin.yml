@@ -7,3 +7,6 @@ softdepend:
 authors: [ dsevvv ]
 description: DamageIndicators premium version, comes with config and many more features!
 website: github.com/dsevvv/damageindicatorsplus
+commands:
+  di:
+
