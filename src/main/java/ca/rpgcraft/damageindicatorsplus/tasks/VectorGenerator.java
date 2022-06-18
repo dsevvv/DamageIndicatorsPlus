@@ -1,7 +1,6 @@
 package ca.rpgcraft.damageindicatorsplus.tasks;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
