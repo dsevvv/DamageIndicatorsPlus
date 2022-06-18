@@ -114,6 +114,8 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
     private void registerListeners(){
         //deciding which burn listener to register, depends on if paper is running or not
+        Bukkit.getPluginManager().registerEvents(new PickItem(), this);
+
         if(isPaper){
             Bukkit.getPluginManager().registerEvents(new BurnListenerPaper(this), this);
         }else {
