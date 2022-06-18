@@ -4,6 +4,8 @@ main: ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus
 api-version: 1.16
 softdepend:
   - ProtocolLib
+  - WorldGuard
+  - DIWGFlags
 authors: [ dsevvv ]
 description: DamageIndicators premium version, comes with config and many more features!
 website: github.com/dsevvv/damageindicatorsplus

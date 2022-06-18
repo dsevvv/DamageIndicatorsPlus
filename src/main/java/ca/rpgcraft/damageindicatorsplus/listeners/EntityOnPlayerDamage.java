@@ -5,6 +5,7 @@ import ca.rpgcraft.damageindicatorsplus.tasks.CreateHologramTask;
 import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
 import ca.rpgcraft.damageindicatorsplus.utils.DamageHologramUtils;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -31,6 +32,10 @@ public class EntityOnPlayerDamage implements Listener {
 
         if(!plugin.getConfig().getBoolean("damage-indicator.sweeping-edge")){
             if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)) return;
+        }
+
+        if(plugin.isDIFlags() && plugin.isWorldGuard()){
+            if(!plugin.isDIFlag(e.getEntity())) return;
         }
 
         CreateHologramTask createHologramTask = new CreateHologramTask(plugin, vectorGenerator, e, hologramManager);

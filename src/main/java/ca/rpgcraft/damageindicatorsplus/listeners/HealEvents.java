@@ -27,6 +27,10 @@ public class HealEvents implements Listener {
     public void onPlayerHealEvent(EntityRegainHealthEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
 
+        if(plugin.isDIFlags() && plugin.isWorldGuard()){
+            if(!plugin.isDIFlag(e.getEntity())) return;
+        }
+
         CreateHologramTask createHologramTask = new CreateHologramTask(plugin, vectorGenerator, e, hologramManager);
         createHologramTask.startHealHologramRunnable();
     }

@@ -34,6 +34,10 @@ public class PlayerOnEntityDamage implements Listener {
             if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)) return;
         }
 
+        if(plugin.isDIFlags() && plugin.isWorldGuard()){
+            if(!plugin.isDIFlag(e.getEntity())) return;
+        }
+
         CreateHologramTask createHologramTask = new CreateHologramTask(plugin, vectorGenerator, e, (Player) e.getDamager(), hologramManager);
         createHologramTask.run();
     }
