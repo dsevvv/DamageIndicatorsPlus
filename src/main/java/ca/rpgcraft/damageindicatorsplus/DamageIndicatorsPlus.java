@@ -115,6 +115,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
     private void registerListeners(){
         //deciding which burn listener to register, depends on if paper is running or not
         Bukkit.getPluginManager().registerEvents(new PickItem(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
 
         if(isPaper){
             Bukkit.getPluginManager().registerEvents(new BurnListenerPaper(this), this);
@@ -178,6 +179,14 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
             diSection.set("mobs", true);
             saveConfig();
         }
+        //default-toggle
+        if(!getConfig().contains("damage-indicator.default-toggle", true)){
+            getLogger().info("Generating default-toggle option in config.");
+            ConfigurationSection diSection = getConfig().getConfigurationSection("damage-indicator");
+            ConfigurationSection se = diSection.createSection("default-toggle");
+            diSection.set("default-toggle", true);
+            saveConfig();
+        }
     }
 
     private void registerBStats(){
@@ -216,5 +225,9 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
     public VectorRingBuffer getRingBuffer() {
         return ringBuffer;
+    }
+
+    public static DamageIndicatorsPlus getInstance(){
+        return DamageIndicatorsPlus.getPlugin(DamageIndicatorsPlus.class);
     }
 }

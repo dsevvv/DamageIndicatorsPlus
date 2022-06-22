@@ -9,6 +9,7 @@
 # Bukkit colors are compatible with text. Please use '&' as the selector. - https://static.planetminecraft.com/files/resource_media/screenshot/1807/example2-1518839184.png
 damage-indicator:
   enabled: true                     #false to disable damage holograms
+  default-toggle: true              #false to toggle off visibility of damage indicators when players first join
   sweeping-edge: false              #false to disable damage holograms for mobs hit by sweeping edge damage (may improve performance)
   players: true                     #false to disable damage holograms on player damage
   mobs: true                        #false to disable damage holograms on mob damage
