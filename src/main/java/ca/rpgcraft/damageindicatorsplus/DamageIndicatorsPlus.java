@@ -1,6 +1,7 @@
 package ca.rpgcraft.damageindicatorsplus;
 
 import ca.rpgcraft.damageindicatorsplus.command.Commands;
+import ca.rpgcraft.damageindicatorsplus.hooks.ProtocolLibHandler;
 import ca.rpgcraft.damageindicatorsplus.listeners.*;
 import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
@@ -83,7 +84,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         if(isWorldGuard){
             getLogger().info("WorldGuard found.");
         }
-        isDIFlags = Bukkit.getPluginManager().isPluginEnabled("DIWGFlags");
+        isDIFlags = Bukkit.getPluginManager().isPluginEnabled("DIWGFlags") && isWorldGuard;
         if(isDIFlags){
             getLogger().info("DI-WGFlags found.");
         }

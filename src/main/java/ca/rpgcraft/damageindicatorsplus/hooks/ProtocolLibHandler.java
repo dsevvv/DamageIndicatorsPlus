@@ -1,5 +1,6 @@
-package ca.rpgcraft.damageindicatorsplus;
+package ca.rpgcraft.damageindicatorsplus.hooks;
 
+import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
 import ca.rpgcraft.damageindicatorsplus.utils.PlayerDataManager;

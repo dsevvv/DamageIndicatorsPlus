@@ -162,7 +162,7 @@ public class CreateHologramTask extends BukkitRunnable {
     private void prepareHologram(ArmorStand hologram){
         hologram.setVisible(false);
         hologram.setVelocity(plugin.getRingBuffer().getNext());
-        hologram.getPersistentDataContainer().set(new NamespacedKey(plugin, "hologram"), PersistentDataType.STRING, "true");
+        hologram.getPersistentDataContainer().set(new NamespacedKey(plugin, "hologram"), PersistentDataType.STRING, "damage_indicator");
         hologram.setBasePlate(false);
         hologram.setCollidable(false);
         hologram.setArms(false);

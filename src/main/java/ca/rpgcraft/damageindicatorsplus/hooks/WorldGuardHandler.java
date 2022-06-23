@@ -1,4 +1,4 @@
-package ca.rpgcraft.damageindicatorsplus.utils;
+package ca.rpgcraft.damageindicatorsplus.hooks;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.util.Location;
@@ -20,7 +20,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-public class WorldGuardUtils {
+public class WorldGuardHandler {
 
     public RegionAssociable createRegionAssociable(Object cause) {
         if (cause instanceof Player) {

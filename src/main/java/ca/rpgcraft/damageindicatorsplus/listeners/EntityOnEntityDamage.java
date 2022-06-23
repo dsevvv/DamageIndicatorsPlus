@@ -1,11 +1,11 @@
 package ca.rpgcraft.damageindicatorsplus.listeners;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
+import ca.rpgcraft.damageindicatorsplus.hooks.WorldGuardHandler;
 import ca.rpgcraft.damageindicatorsplus.tasks.CreateHologramTask;
 import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
 import ca.rpgcraft.damageindicatorsplus.utils.DamageHologramUtils;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
-import ca.rpgcraft.damageindicatorsplus.utils.WorldGuardUtils;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,7 +36,7 @@ public class EntityOnEntityDamage implements Listener {
         }
 
         if(plugin.isDIFlags() && plugin.isWorldGuard()){
-            if(!new WorldGuardUtils().isDIFlag(e.getEntity())) return;
+            if(!new WorldGuardHandler().isDIFlag(e.getEntity())) return;
         }
 
         CreateHologramTask createHologramTask = new CreateHologramTask(plugin, vectorGenerator, e, hologramManager);

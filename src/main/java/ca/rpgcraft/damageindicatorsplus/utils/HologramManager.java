@@ -30,4 +30,8 @@ public class HologramManager {
 
         hologramList.remove(hologram.getUniqueId());
     }
+
+    public boolean isHologram(ArmorStand hologram) {
+        return hologramList.containsKey(hologram.getUniqueId());
+    }
 }
