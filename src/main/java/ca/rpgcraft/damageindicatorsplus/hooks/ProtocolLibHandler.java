@@ -33,10 +33,9 @@ public class ProtocolLibHandler {
     }
 
     public void initProtocolLib(){
-        VectorRingBuffer vectorRingBuffer = plugin.getRingBuffer();
         plugin.getLogger().info("ProtocolLib found.");
         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.SPAWN_ENTITY) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 PacketContainer packet = event.getPacket();

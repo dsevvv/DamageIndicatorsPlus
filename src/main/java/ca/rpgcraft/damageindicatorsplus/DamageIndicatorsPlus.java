@@ -13,6 +13,7 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.MultiLineChart;
 
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +39,8 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
     private boolean isDIFlags;
 
     private final Logger logger = getLogger();
+
+    private final NamespacedKey key = new NamespacedKey(this, "hologram");
 
     @Override
     public void onEnable() {
@@ -230,5 +233,13 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
     public static DamageIndicatorsPlus getInstance(){
         return DamageIndicatorsPlus.getPlugin(DamageIndicatorsPlus.class);
+    }
+
+    public NamespacedKey getHologramKey() {
+        return key;
+    }
+
+    public HologramManager getHologramManager() {
+        return hologramManager;
     }
 }

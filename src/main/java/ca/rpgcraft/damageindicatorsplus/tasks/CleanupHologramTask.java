@@ -1,7 +1,12 @@
 package ca.rpgcraft.damageindicatorsplus.tasks;
 
+import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
+import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class CleanupHologramTask extends BukkitRunnable {
@@ -18,5 +23,24 @@ public class CleanupHologramTask extends BukkitRunnable {
     public void run() {
         hologramManager.removeHologram(hologram);
         hologram.remove();
+    }
+
+    public void asyncClearWorld(World world){
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+
+                for (ArmorStand armorStand : world.getEntitiesByClass(ArmorStand.class)) {
+
+                    PersistentDataContainer container = armorStand.getPersistentDataContainer();
+
+                    if(container.has(DamageIndicatorsPlus.getInstance().getHologramKey(), PersistentDataType.STRING)){
+                        hologramManager.removeHologram(armorStand);
+                        armorStand.remove();
+                    }
+                }
+            }
+        }.runTask(DamageIndicatorsPlus.getInstance());
     }
 }
