@@ -1,10 +1,10 @@
 package ca.rpgcraft.damageindicatorsplus.listeners;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
-import ca.rpgcraft.damageindicatorsplus.hooks.WorldGuardHandler;
+import ca.rpgcraft.damageindicatorsplus.hooks.WorldGuardBridge;
 import ca.rpgcraft.damageindicatorsplus.tasks.CreateHologramTask;
-import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,14 +13,11 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 public class HealEvents implements Listener {
 
     private final DamageIndicatorsPlus plugin;
-    private final VectorGenerator vectorGenerator;
     private final HologramManager hologramManager;
 
     public HealEvents(DamageIndicatorsPlus plugin,
-                      VectorGenerator vectorGenerator,
                       HologramManager hologramManager){
         this.plugin = plugin;
-        this.vectorGenerator = vectorGenerator;
         this.hologramManager = hologramManager;
     }
 
@@ -29,10 +26,17 @@ public class HealEvents implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
 
         if(plugin.isDIFlags() && plugin.isWorldGuard()){
-            if(!new WorldGuardHandler().isDIFlag(e.getEntity())) return;
+            if(!allowHologramSpawn(e.getEntity())) return;
         }
 
-        CreateHologramTask createHologramTask = new CreateHologramTask(plugin, vectorGenerator, e, hologramManager);
+        CreateHologramTask createHologramTask = new CreateHologramTask(plugin, e, hologramManager);
         createHologramTask.startHealHologramRunnable();
+    }
+
+    private boolean allowHologramSpawn(Entity entity){
+        if(!DamageIndicatorsPlus.getInstance().isWorldGuard())
+            return true;
+
+        return new WorldGuardBridge().isDIFlag(entity);
     }
 }

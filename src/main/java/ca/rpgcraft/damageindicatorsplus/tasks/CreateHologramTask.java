@@ -1,6 +1,7 @@
 package ca.rpgcraft.damageindicatorsplus.tasks;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
+import ca.rpgcraft.damageindicatorsplus.hooks.PlaceholderBridge;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
@@ -23,32 +24,28 @@ public class CreateHologramTask extends BukkitRunnable {
     private final DamageIndicatorsPlus plugin;
     private EntityDamageEvent entityDamageEvent;
     private EntityRegainHealthEvent entityHealEvent;
-    private final VectorGenerator vectorGenerator;
     private final HologramManager hologramManager;
     private final Random rand = new Random();
     private final DecimalFormat decimalFormat = new DecimalFormat("#0.0");
 
     private Player playerDamager = null;
 
-    public CreateHologramTask(DamageIndicatorsPlus plugin, VectorGenerator vectorGenerator, EntityDamageEvent e, HologramManager hologramManager) {
+    public CreateHologramTask(DamageIndicatorsPlus plugin, EntityDamageEvent e, HologramManager hologramManager) {
         this.plugin = plugin;
         this.entityDamageEvent = e;
-        this.vectorGenerator = vectorGenerator;
         this.hologramManager = hologramManager;
     }
 
-    public CreateHologramTask(DamageIndicatorsPlus plugin, VectorGenerator vectorGenerator, EntityDamageEvent e, Player playerDamager, HologramManager hologramManager) {
+    public CreateHologramTask(DamageIndicatorsPlus plugin, EntityDamageEvent e, Player playerDamager, HologramManager hologramManager) {
         this.plugin = plugin;
         this.entityDamageEvent = e;
         this.playerDamager = playerDamager;
-        this.vectorGenerator = vectorGenerator;
         this.hologramManager = hologramManager;
     }
 
-    public CreateHologramTask(DamageIndicatorsPlus plugin, VectorGenerator vectorGenerator, EntityRegainHealthEvent e, HologramManager hologramManager) {
+    public CreateHologramTask(DamageIndicatorsPlus plugin, EntityRegainHealthEvent e, HologramManager hologramManager) {
         this.plugin = plugin;
         this.entityHealEvent = e;
-        this.vectorGenerator = vectorGenerator;
         this.hologramManager = hologramManager;
     }
 
@@ -91,33 +88,29 @@ public class CreateHologramTask extends BukkitRunnable {
                 int lifespanSecs = plugin.getConfig().contains("heal-indicator.lifespan") ? plugin.getConfig().getInt("heal-indicator.lifespan") : 1;
                 double healFinal = entityHealEvent.getAmount();
                 Entity target = entityHealEvent.getEntity();
-                double offX = plugin.getConfig().contains("heal-indicator.particle.offset.x") ?
-                        plugin.getConfig().getDouble("heal-indicator.particle.offset.x") : .5;
-                double offY = plugin.getConfig().contains("heal-indicator.particle.offset.y") ?
-                        plugin.getConfig().getDouble("heal-indicator.particle.offset.y") : .5;
-                double offZ = plugin.getConfig().contains("heal-indicator.particle.offset.z") ?
-                        plugin.getConfig().getDouble("heal-indicator.particle.offset.z") : .5;
+                double offX = plugin.getConfig().contains("heal-indicator.offset.x") ?
+                        plugin.getConfig().getDouble("heal-indicator.offset.x") : .5;
+                double offY = plugin.getConfig().contains("heal-indicator.offset.y") ?
+                        plugin.getConfig().getDouble("heal-indicator.offset.y") : .5;
+                double offZ = plugin.getConfig().contains("heal-indicator.offset.z") ?
+                        plugin.getConfig().getDouble("heal-indicator.offset.z") : .5;
 
                 double offXUp = offX * 100;
-                double offYUp = offY * 100;
                 double offZUp = offZ * 100;
 
                 int offXInt = (int) offXUp;
-                int offYInt = (int) offYUp;
                 int offZInt = (int) offZUp;
 
                 int randX = rand.nextInt(2 ) == 0 ? rand.nextInt(offXInt)+10 : -rand.nextInt(offXInt)+10;
                 int randZ = rand.nextInt(2 ) == 0 ? rand.nextInt(offZInt)+10 : -rand.nextInt(offZInt)+10;
-                int randY = rand.nextInt(offYInt)+10;
 
                 double x = (double) randX / 100;
-                double y = (double) randY / 100;
                 double z = (double) randZ / 100;
 
                 ArmorStand hologram;
 
                 if(plugin.isPaper()){
-                    hologram = hologramManager.addHologram((ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(x, y, z), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM));
+                    hologram = hologramManager.addHologram((ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(x, offY, z), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM));
                 }else{
                     hologram = hologramManager.addHologram((ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND));
                 }
@@ -138,8 +131,12 @@ public class CreateHologramTask extends BukkitRunnable {
     }
 
     private String hologramName(double dmgFinal) {
+        //get from config
         String customName = plugin.getConfig().getString("damage-indicator.indicator-message") != null ?
-                ChatColor.translateAlternateColorCodes('&', new StringBuilder(plugin.getConfig().getString("damage-indicator.indicator-message")).append(decimalFormat.format(dmgFinal)).toString()) : ChatColor.translateAlternateColorCodes('&', new StringBuilder("&c-").append(decimalFormat.format(dmgFinal)).toString());
+                ChatColor.translateAlternateColorCodes('&', new StringBuilder(plugin.getConfig().getString("damage-indicator.indicator-message")).toString()) : ChatColor.translateAlternateColorCodes('&', new StringBuilder("&c-").append(decimalFormat.format(dmgFinal)).toString());
+
+        //parse {damage} from config into dmgFinal number
+        customName = customName.replace("{damage}", decimalFormat.format(dmgFinal));
 
         //checking if a critical hit
         if(playerDamager != null) {
@@ -147,16 +144,44 @@ public class CreateHologramTask extends BukkitRunnable {
                 String criticalName = plugin.getConfig().getString("damage-indicator.critical-message") != null ?
                         ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("damage-indicator.critical-message")) : ChatColor.translateAlternateColorCodes('&',"&4&l&oCrit!");
 
+                if(plugin.isPAPI())
+                    criticalName = new PlaceholderBridge().parse(playerDamager, criticalName);
+                else
+                    criticalName = criticalName.replaceAll("%[^%]+%", "");
+
                 customName = customName + " " + criticalName;
+                if(plugin.isPAPI())
+                    return new PlaceholderBridge().parse(playerDamager, customName);
+                else
+                    return customName.replaceAll("%[^%]+%", "");
+            }
+            else {
+                if(plugin.isPAPI())
+                    return new PlaceholderBridge().parse(playerDamager, customName);
+                else
+                    return customName.replaceAll("%[^%]+%", "");
             }
         }
 
-        return customName;
+        if(plugin.isPAPI() && entityDamageEvent.getEntity() instanceof Player)
+            return new PlaceholderBridge().parse((Player) entityDamageEvent.getEntity(), customName);
+        else
+            //remove any text between % and the next %
+            return customName.replaceAll("%[^%]+%", "");
     }
 
     private String healHologramName(double healFinal) {
-        return plugin.getConfig().getString("heal-indicator.indicator-message") != null ?
-                ChatColor.translateAlternateColorCodes('&', new StringBuilder(plugin.getConfig().getString("heal-indicator.indicator-message")).append(decimalFormat.format(healFinal)).toString()) : ChatColor.translateAlternateColorCodes('&',  new StringBuilder("&a+").append(decimalFormat.format(healFinal)).toString());
+        String customName = plugin.getConfig().getString("heal-indicator.indicator-message") != null ?
+                ChatColor.translateAlternateColorCodes('&', new StringBuilder(plugin.getConfig().getString("heal-indicator.indicator-message")).toString()) : ChatColor.translateAlternateColorCodes('&',  new StringBuilder("&a+").append(decimalFormat.format(healFinal)).toString());
+
+        customName = customName.replace("{heal}", decimalFormat.format(healFinal));
+
+        Player player = (Player) entityHealEvent.getEntity();
+
+        if(plugin.isPAPI())
+            return new PlaceholderBridge().parse(player, customName);
+        else
+            return customName.replaceAll("%[^%]+%", "");
     }
 
     private void prepareHologram(ArmorStand hologram){

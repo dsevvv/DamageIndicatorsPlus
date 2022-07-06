@@ -1,7 +1,7 @@
 package ca.rpgcraft.damageindicatorsplus;
 
 import ca.rpgcraft.damageindicatorsplus.command.Commands;
-import ca.rpgcraft.damageindicatorsplus.hooks.ProtocolLibHandler;
+import ca.rpgcraft.damageindicatorsplus.hooks.ProtocolLibBridge;
 import ca.rpgcraft.damageindicatorsplus.listeners.*;
 import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
@@ -35,8 +35,9 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
     private boolean isPaper;
     private boolean isProtocolLib;
-    private boolean isWorldGuard;
-    private boolean isDIFlags;
+    private boolean isWorldGuard = false;
+    private boolean isDIFlags = false;
+    private boolean isPAPI = false;
 
     private final Logger logger = getLogger();
 
@@ -73,7 +74,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
                 isProtocolLib = Bukkit.getPluginManager().isPluginEnabled("ProtocolLib");
                 isPaper = true;
                 if(isProtocolLib){
-                    new ProtocolLibHandler(this, vectorGenerator, hologramManager);
+                    new ProtocolLibBridge(this, vectorGenerator, hologramManager);
                 }
             }catch (Exception ignored){
                 getLogger().info("Paper API not found.");
@@ -90,6 +91,10 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         isDIFlags = Bukkit.getPluginManager().isPluginEnabled("DIWGFlags") && isWorldGuard;
         if(isDIFlags){
             getLogger().info("DI-WGFlags found.");
+        }
+        isPAPI = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+        if(isPAPI){
+            getLogger().info("PlaceholderAPI found.");
         }
 
         logger.log(Level.INFO, "Initializing vector generation...");
@@ -138,7 +143,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         //checking config if heal indicators should be enabled
         if(getConfig().getBoolean("heal-indicator.enabled")){
             logger.info("Heal Indicator Enabled.");
-            Bukkit.getPluginManager().registerEvents(new HealEvents(this, vectorGenerator, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new HealEvents(this, hologramManager), this);
         }else{
             logger.info("Heal Indicator Disabled.");
         }
@@ -147,14 +152,14 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
     private void enableDamageIndicators(){
         //checking if player indicators are enabled
         if(getConfig().getBoolean("damage-indicator.players")){
-            Bukkit.getPluginManager().registerEvents(new PlayerDamage(this, vectorGenerator, hologramManager), this);
-            Bukkit.getPluginManager().registerEvents(new EntityOnPlayerDamage(this, vectorGenerator, hologramManager), this);
-            Bukkit.getPluginManager().registerEvents(new PlayerOnPlayerDamage(this, vectorGenerator, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new PlayerDamage(this, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new EntityOnPlayerDamage(this, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new PlayerOnPlayerDamage(this, hologramManager), this);
         }
         //checking if mob indicators are enabled
         if(getConfig().getBoolean("damage-indicator.mobs")){
-            Bukkit.getPluginManager().registerEvents(new EntityOnEntityDamage(this, vectorGenerator, hologramManager), this);
-            Bukkit.getPluginManager().registerEvents(new PlayerOnEntityDamage(this, vectorGenerator, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new EntityOnEntityDamage(this, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new PlayerOnEntityDamage(this, hologramManager), this);
         }
     }
 
@@ -221,6 +226,10 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
     public boolean isDIFlags() {
         return isDIFlags;
+    }
+
+    public boolean isPAPI() {
+        return isPAPI;
     }
 
     public PlayerDataManager getPlayerDataManager() {

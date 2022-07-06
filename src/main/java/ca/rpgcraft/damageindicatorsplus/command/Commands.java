@@ -69,6 +69,16 @@ public class Commands implements CommandExecutor, TabCompleter {
             fileConfiguration.set("players", playerList);
             playerDataManager.savePlayerDataConfig();
         }
+
+        //reload command
+        if(args[0].equalsIgnoreCase("reload")){
+            if(!sender.hasPermission("di.reload")){
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou do not have permission to run this command!"));
+                return false;
+            }
+            plugin.reloadConfig();
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aDamage Indicators: &2Config reloaded"));
+        }
         return false;
     }
 
@@ -80,6 +90,7 @@ public class Commands implements CommandExecutor, TabCompleter {
 
             completions.add("clear");
             completions.add("toggle");
+            completions.add("reload");
 
             List<String> result = new ArrayList<>();
 
@@ -104,6 +115,9 @@ public class Commands implements CommandExecutor, TabCompleter {
         sender.sendMessage(ChatColor.translateAlternateColorCodes(
                 '&',
                 "&c/di toggle &7- &aToggles visibility of damage indicators."));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes(
+                '&',
+                "&e/di reload &7- &aReloads the config.yml file."));
         sender.sendMessage(ChatColor.translateAlternateColorCodes(
                 '&',
                 "&e========== &bDamage Indicators &e=========="));

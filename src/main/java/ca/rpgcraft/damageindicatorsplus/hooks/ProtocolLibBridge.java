@@ -4,7 +4,6 @@ import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
 import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
 import ca.rpgcraft.damageindicatorsplus.utils.PlayerDataManager;
-import ca.rpgcraft.damageindicatorsplus.utils.VectorRingBuffer;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -19,13 +18,13 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.List;
 
-public class ProtocolLibHandler {
+public class ProtocolLibBridge {
 
     private final DamageIndicatorsPlus plugin;
     private final VectorGenerator vectorGenerator;
     private final HologramManager hologramManager;
 
-    public ProtocolLibHandler(DamageIndicatorsPlus plugin, VectorGenerator vectorGenerator, HologramManager hologramManager){
+    public ProtocolLibBridge(DamageIndicatorsPlus plugin, VectorGenerator vectorGenerator, HologramManager hologramManager){
         this.plugin = plugin;
         this.vectorGenerator = vectorGenerator;
         this.hologramManager = hologramManager;

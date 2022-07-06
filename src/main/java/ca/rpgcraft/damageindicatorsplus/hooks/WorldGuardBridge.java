@@ -20,7 +20,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-public class WorldGuardHandler {
+public class WorldGuardBridge {
 
     public RegionAssociable createRegionAssociable(Object cause) {
         if (cause instanceof Player) {
