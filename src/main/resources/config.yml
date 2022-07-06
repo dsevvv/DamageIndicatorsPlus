@@ -43,7 +43,7 @@ heal-indicator:
   lifespan: 1                       #lifespan of hologram in seconds
   offset:
     x: .5                           #offset for hologram spawn location on x-axis
-    y: .5                           #offset for hologram spawn location on y-axis
+    y: 1.15                           #offset for hologram spawn location on y-axis
     z: .5                           #offset for hologram spawn location on z-axis
   particle:
     enabled: true                   #false to disable particles for heal holograms
