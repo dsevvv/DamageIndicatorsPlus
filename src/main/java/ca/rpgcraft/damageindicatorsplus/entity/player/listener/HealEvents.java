@@ -1,9 +1,9 @@
-package ca.rpgcraft.damageindicatorsplus.listeners;
+package ca.rpgcraft.damageindicatorsplus.entity.player.listener;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import ca.rpgcraft.damageindicatorsplus.hooks.WorldGuardBridge;
-import ca.rpgcraft.damageindicatorsplus.tasks.CreateHologramTask;
-import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.task.CreateHologramTask;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.HologramManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +30,7 @@ public class HealEvents implements Listener {
         }
 
         CreateHologramTask createHologramTask = new CreateHologramTask(plugin, e, hologramManager);
-        createHologramTask.startHealHologramRunnable();
+        createHologramTask.spawnHealIndicator();
     }
 
     private boolean allowHologramSpawn(Entity entity){

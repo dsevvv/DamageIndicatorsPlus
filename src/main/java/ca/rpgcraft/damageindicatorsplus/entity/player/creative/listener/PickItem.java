@@ -1,7 +1,6 @@
-package ca.rpgcraft.damageindicatorsplus.listeners;
+package ca.rpgcraft.damageindicatorsplus.entity.player.creative.listener;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;

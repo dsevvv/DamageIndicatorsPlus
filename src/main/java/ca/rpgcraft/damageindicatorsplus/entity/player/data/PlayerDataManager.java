@@ -1,4 +1,4 @@
-package ca.rpgcraft.damageindicatorsplus.utils;
+package ca.rpgcraft.damageindicatorsplus.entity.player.data;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,12 +12,11 @@ import java.util.logging.Level;
 
 public class PlayerDataManager {
 
-    private final DamageIndicatorsPlus plugin;
+    private static final DamageIndicatorsPlus plugin = DamageIndicatorsPlus.getInstance();
     private FileConfiguration dataConfig = null;
     private File configFile = null;
 
-    public PlayerDataManager(DamageIndicatorsPlus plugin) {
-        this.plugin = plugin;
+    public PlayerDataManager() {
         saveDefaultPlayerConfig();
     }
 

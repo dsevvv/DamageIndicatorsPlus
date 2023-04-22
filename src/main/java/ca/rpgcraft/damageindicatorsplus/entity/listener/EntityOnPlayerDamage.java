@@ -1,10 +1,10 @@
-package ca.rpgcraft.damageindicatorsplus.listeners;
+package ca.rpgcraft.damageindicatorsplus.entity.listener;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import ca.rpgcraft.damageindicatorsplus.hooks.WorldGuardBridge;
-import ca.rpgcraft.damageindicatorsplus.tasks.CreateHologramTask;
-import ca.rpgcraft.damageindicatorsplus.utils.DamageHologramUtils;
-import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.task.CreateHologramTask;
+import ca.rpgcraft.damageindicatorsplus.util.DamageEventChecks;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.HologramManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,8 +24,9 @@ public class EntityOnPlayerDamage implements Listener {
 
     @EventHandler
     void onPlayerDamageByEntityEvent(org.bukkit.event.entity.EntityDamageByEntityEvent e) {
-        if(!DamageHologramUtils.isEntityOnPlayerEvent(e.getEntity(), e.getDamager())) return;
-        if(DamageHologramUtils.isIgnored(e)) return;
+        if(e.isCancelled()) return;
+        if(!DamageEventChecks.isEntityOnPlayerEvent(e.getEntity(), e.getDamager())) return;
+        if(DamageEventChecks.isIgnored(e)) return;
 
         if(!plugin.getConfig().getBoolean("damage-indicator.sweeping-edge")){
             if(e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)) return;

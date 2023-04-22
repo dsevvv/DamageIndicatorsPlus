@@ -1,11 +1,11 @@
-package ca.rpgcraft.damageindicatorsplus.utils;
+package ca.rpgcraft.damageindicatorsplus.util;
 
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class DamageHologramUtils {
+public class DamageEventChecks {
 
     public static boolean isPlayerEvent(Entity victim){
         if (!(victim instanceof Player)) return false;

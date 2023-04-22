@@ -1,4 +1,4 @@
-package ca.rpgcraft.damageindicatorsplus.tasks;
+package ca.rpgcraft.damageindicatorsplus.util;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import org.bukkit.util.Vector;
@@ -7,13 +7,9 @@ import java.util.Random;
 
 public class VectorGenerator {
 
-    private final DamageIndicatorsPlus plugin;
+    private static final DamageIndicatorsPlus plugin = DamageIndicatorsPlus.getInstance();
 
-    public VectorGenerator(DamageIndicatorsPlus plugin) {
-        this.plugin = plugin;
-    }
-
-    public Vector getVector(){
+    public static Vector getVector(){
         Random rand = new Random();
 
         double horiRange = plugin.getConfig().contains("damage-indicator.velocity.horizontal") ?

@@ -6,71 +6,73 @@
 
     <groupId>ca.rpgcraft</groupId>
     <artifactId>DamageIndicatorsPlus</artifactId>
-    <version>2.6.0</version>
+    <version>2.7.0</version>
     <packaging>jar</packaging>
 
     <name>DamageIndicatorsPlus</name>
 
     <description>DamageIndicators premium version, comes with config and many more features!</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <url>github.com/dsevvv/damageindicatorsplus</url>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>16</source>
-                    <target>16</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.5.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>proguard</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <obfuscate>true</obfuscate>
-                    <injar>${project.build.finalName}.jar</injar>
-                    <outjar>${project.build.finalName}.jar</outjar>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
-                    <libs>
-                        <lib>${java.home}/jmods/java.base.jmod</lib>
-                        <lib>${java.home}/jmods/java.logging.jmod</lib>
-                    </libs>
-                    <options>
-                        <option>-verbose</option>
-                        <option>-dontnote module-info</option>
-                        <option>-dontnote jdk.internal.jimage.*</option>
-                        <option>-dontnote jdk.internal.jimage.decompressor.*</option>
-                        <option>-dontnote jdk.internal.jrtfs.*</option>
-                        <option>-keepclassmembers, allowobfuscation class * {
-                            @org.bukkit.event.EventHandler *;
-                            }
-                        </option>
-                        <option>-overloadaggressively</option>
-                        <option>-repackageclasses</option>
-                        <option>-dontoptimize</option>
-                        <option>-keepattributes *Annotation*, Override, InnerClasses, Exceptions, Signature, SourceFile, LineNumberTable</option>
-                        <option>-keep public class ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus</option>
-                        <option>-keepclassmembers public class ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus</option>
-                        <option>-printmapping proguard_map_di_plus</option>
-                    </options>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>3.8.1</version>-->
+<!--                <configuration>-->
+<!--                    <source>16</source>-->
+<!--                    <target>16</target>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>com.github.wvengen</groupId>-->
+<!--                <artifactId>proguard-maven-plugin</artifactId>-->
+<!--                <version>2.5.1</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>proguard</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <obfuscate>true</obfuscate>-->
+<!--                    <injar>${project.build.finalName}.jar</injar>-->
+<!--                    <outjar>${project.build.finalName}.jar</outjar>-->
+<!--                    <outputDirectory>${project.build.directory}</outputDirectory>-->
+<!--                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>-->
+<!--                    <libs>-->
+<!--                        <lib>${java.home}/jmods/java.base.jmod</lib>-->
+<!--                        <lib>${java.home}/jmods/java.logging.jmod</lib>-->
+<!--                    </libs>-->
+<!--                    <options>-->
+<!--                        <option>-verbose</option>-->
+<!--                        <option>-dontnote module-info</option>-->
+<!--                        <option>-dontnote jdk.internal.jimage.*</option>-->
+<!--                        <option>-dontnote jdk.internal.jimage.decompressor.*</option>-->
+<!--                        <option>-dontnote jdk.internal.jrtfs.*</option>-->
+<!--                        <option>-keepclassmembers, allowobfuscation class * {-->
+<!--                            @org.bukkit.event.EventHandler *;-->
+<!--                            }-->
+<!--                        </option>-->
+<!--                        <option>-overloadaggressively</option>-->
+<!--                        <option>-repackageclasses</option>-->
+<!--                        <option>-dontoptimize</option>-->
+<!--                        <option>-keepattributes *Annotation*, Override, InnerClasses, Exceptions, Signature, SourceFile, LineNumberTable</option>-->
+<!--                        <option>-keep public class ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus</option>-->
+<!--                        <option>-keepclassmembers public class ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus</option>-->
+<!--                        <option>-printmapping proguard_map_di_plus</option>-->
+<!--                    </options>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -89,6 +91,39 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.md-5</groupId>
+                <artifactId>specialsource-maven-plugin</artifactId>
+                <version>1.2.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>remap</goal>
+                        </goals>
+                        <id>remap-obf</id>
+                        <configuration>
+                            <srgIn>org.spigotmc:minecraft-server:1.19.4-R0.1-SNAPSHOT:txt:maps-mojang</srgIn>
+                            <reverse>true</reverse>
+                            <remappedDependencies>org.spigotmc:spigot:1.19.4-R0.1-SNAPSHOT:jar:remapped-mojang</remappedDependencies>
+                            <remappedArtifactAttached>true</remappedArtifactAttached>
+                            <remappedClassifierName>remapped-obf</remappedClassifierName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>remap</goal>
+                        </goals>
+                        <id>remap-spigot</id>
+                        <configuration>
+                            <inputFile>${project.build.directory}/${project.artifactId}-${project.version}-remapped-obf.jar</inputFile>
+                            <srgIn>org.spigotmc:minecraft-server:1.19.4-R0.1-SNAPSHOT:csrg:maps-spigot</srgIn>
+                            <remappedDependencies>org.spigotmc:spigot:1.19.4-R0.1-SNAPSHOT:jar:remapped-obf</remappedDependencies>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -146,6 +181,13 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.16.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <classifier>remapped-mojang</classifier>
             <scope>provided</scope>
         </dependency>
         <dependency>

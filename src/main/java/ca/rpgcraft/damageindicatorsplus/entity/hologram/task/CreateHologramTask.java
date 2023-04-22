@@ -1,8 +1,8 @@
-package ca.rpgcraft.damageindicatorsplus.tasks;
+package ca.rpgcraft.damageindicatorsplus.entity.hologram.task;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.HologramManager;
 import ca.rpgcraft.damageindicatorsplus.hooks.PlaceholderBridge;
-import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -81,53 +81,49 @@ public class CreateHologramTask extends BukkitRunnable {
     /**
      * Heal Hologram
      */
-    public void startHealHologramRunnable(){
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                int lifespanSecs = plugin.getConfig().contains("heal-indicator.lifespan") ? plugin.getConfig().getInt("heal-indicator.lifespan") : 1;
-                double healFinal = entityHealEvent.getAmount();
-                Entity target = entityHealEvent.getEntity();
-                double offX = plugin.getConfig().contains("heal-indicator.offset.x") ?
-                        plugin.getConfig().getDouble("heal-indicator.offset.x") : .5;
-                double offY = plugin.getConfig().contains("heal-indicator.offset.y") ?
-                        plugin.getConfig().getDouble("heal-indicator.offset.y") : .5;
-                double offZ = plugin.getConfig().contains("heal-indicator.offset.z") ?
-                        plugin.getConfig().getDouble("heal-indicator.offset.z") : .5;
+    public void spawnHealIndicator(){
 
-                double offXUp = offX * 100;
-                double offZUp = offZ * 100;
+        boolean isParticle = !plugin.getConfig().contains("heal-indicator.particle.enabled") || plugin.getConfig().getBoolean("heal-indicator.particle.enabled");
+        int lifespanSecs = plugin.getConfig().contains("heal-indicator.lifespan") ? plugin.getConfig().getInt("heal-indicator.lifespan") : 1;
+        double healFinal = entityHealEvent.getAmount();
+        Entity target = entityHealEvent.getEntity();
+        double offX = plugin.getConfig().contains("heal-indicator.offset.x") ?
+                plugin.getConfig().getDouble("heal-indicator.offset.x") : .5;
+        double offY = plugin.getConfig().contains("heal-indicator.offset.y") ?
+                plugin.getConfig().getDouble("heal-indicator.offset.y") : .5;
+        double offZ = plugin.getConfig().contains("heal-indicator.offset.z") ?
+                plugin.getConfig().getDouble("heal-indicator.offset.z") : .5;
 
-                int offXInt = (int) offXUp;
-                int offZInt = (int) offZUp;
+        double offXUp = offX * 100;
+        double offZUp = offZ * 100;
 
-                int randX = rand.nextInt(2 ) == 0 ? rand.nextInt(offXInt)+10 : -rand.nextInt(offXInt)+10;
-                int randZ = rand.nextInt(2 ) == 0 ? rand.nextInt(offZInt)+10 : -rand.nextInt(offZInt)+10;
+        int offXInt = (int) offXUp;
+        int offZInt = (int) offZUp;
 
-                double x = (double) randX / 100;
-                double z = (double) randZ / 100;
+        int randX = rand.nextInt(2 ) == 0 ? rand.nextInt(offXInt)+10 : -rand.nextInt(offXInt)+10;
+        int randZ = rand.nextInt(2 ) == 0 ? rand.nextInt(offZInt)+10 : -rand.nextInt(offZInt)+10;
 
-                ArmorStand hologram;
+        double x = (double) randX / 100;
+        double z = (double) randZ / 100;
 
-                if(plugin.isPaper()){
-                    hologram = hologramManager.addHologram((ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(x, offY, z), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM));
-                }else{
-                    hologram = hologramManager.addHologram((ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND));
-                }
+        ArmorStand hologram;
 
-                prepareHologram(hologram);
-                hologram.setGravity(false);
-                hologram.setCustomName(healHologramName(healFinal));
+        if(plugin.isPaper()){
+            hologram = hologramManager.addHologram((ArmorStand) target.getWorld().spawnEntity(target.getLocation().add(x, offY, z), EntityType.ARMOR_STAND, CreatureSpawnEvent.SpawnReason.CUSTOM));
+        }else{
+            hologram = hologramManager.addHologram((ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND));
+        }
 
-                boolean isParticle = !plugin.getConfig().contains("heal-indicator.particle.enabled") || plugin.getConfig().getBoolean("heal-indicator.particle.enabled");
+        prepareHologram(hologram);
+        hologram.setGravity(false);
+        hologram.setCustomName(healHologramName(healFinal));
 
-                if(isParticle)
-                    hologram.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hologram.getLocation().add(0, 1.25, 0), 3, .25, .1, .25);
 
-                CleanupHologramTask cleanupTask = new CleanupHologramTask(hologram, hologramManager);
-                cleanupTask.runTaskLater(plugin, 20L * lifespanSecs);
-            }
-        }.run();
+        if(isParticle)
+            hologram.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, hologram.getLocation().add(0, 1.25, 0), 3, .25, .1, .25);
+
+        CleanupHologramTask cleanupTask = new CleanupHologramTask(hologram, hologramManager);
+        cleanupTask.runTaskLater(plugin, 20L * lifespanSecs);
     }
 
     private String hologramName(double dmgFinal) {
@@ -199,6 +195,7 @@ public class CreateHologramTask extends BukkitRunnable {
         hologram.setRightLegPose(EulerAngle.ZERO.add(180, 0, 0));
         hologram.setInvulnerable(true);
         hologram.setCustomNameVisible(true);
+        hologram.setMarker(true);
     }
 
     private void spawnParticle(Entity victim){

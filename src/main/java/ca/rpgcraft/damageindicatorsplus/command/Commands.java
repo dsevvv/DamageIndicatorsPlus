@@ -1,8 +1,8 @@
 package ca.rpgcraft.damageindicatorsplus.command;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
-import ca.rpgcraft.damageindicatorsplus.tasks.CleanupHologramTask;
-import ca.rpgcraft.damageindicatorsplus.utils.PlayerDataManager;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.task.CleanupHologramTask;
+import ca.rpgcraft.damageindicatorsplus.entity.player.data.PlayerDataManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

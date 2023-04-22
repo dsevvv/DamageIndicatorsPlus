@@ -1,13 +1,22 @@
 package ca.rpgcraft.damageindicatorsplus;
 
 import ca.rpgcraft.damageindicatorsplus.command.Commands;
+import ca.rpgcraft.damageindicatorsplus.entity.listener.EntityOnEntityDamage;
+import ca.rpgcraft.damageindicatorsplus.entity.listener.EntityOnPlayerDamage;
+import ca.rpgcraft.damageindicatorsplus.entity.listener.PlayerOnEntityDamage;
+import ca.rpgcraft.damageindicatorsplus.entity.player.listener.PlayerDamage;
+import ca.rpgcraft.damageindicatorsplus.entity.player.listener.PlayerOnPlayerDamage;
 import ca.rpgcraft.damageindicatorsplus.hooks.ProtocolLibBridge;
-import ca.rpgcraft.damageindicatorsplus.listeners.*;
-import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
-import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
+import ca.rpgcraft.damageindicatorsplus.entity.player.creative.listener.PickItem;
+import ca.rpgcraft.damageindicatorsplus.entity.player.listener.HealEvents;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.listener.BurnListenerPaper;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.listener.BurnListenerSpigot;
+import ca.rpgcraft.damageindicatorsplus.entity.player.listener.PlayerJoin;
+import ca.rpgcraft.damageindicatorsplus.util.VectorGenerator;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.HologramManager;
 
-import ca.rpgcraft.damageindicatorsplus.utils.PlayerDataManager;
-import ca.rpgcraft.damageindicatorsplus.utils.VectorRingBuffer;
+import ca.rpgcraft.damageindicatorsplus.entity.player.data.PlayerDataManager;
+import ca.rpgcraft.damageindicatorsplus.util.VectorRingBuffer;
 
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.MultiLineChart;
@@ -28,9 +37,8 @@ import java.util.logging.Logger;
 
 public final class DamageIndicatorsPlus extends JavaPlugin {
 
-    private final PlayerDataManager playerDataManager = new PlayerDataManager(this);
-    private final HologramManager hologramManager = new HologramManager();
-    private final VectorGenerator vectorGenerator = new VectorGenerator(this);
+    private PlayerDataManager playerDataManager;
+    private HologramManager hologramManager;
     private VectorRingBuffer ringBuffer;
 
     private boolean isPaper;
@@ -38,6 +46,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
     private boolean isWorldGuard = false;
     private boolean isDIFlags = false;
     private boolean isPAPI = false;
+    public boolean is1_19_4 = false;
 
     private final Logger logger = getLogger();
 
@@ -46,6 +55,9 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
     @Override
     public void onEnable() {
         long startTimeMili = System.currentTimeMillis();
+
+        hologramManager = new HologramManager();
+        playerDataManager = new PlayerDataManager();
 
         try {
             logger.info("Author: " + new URL("https://www.spigotmc.org/members/dsevvv.1425637/"));
@@ -74,7 +86,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
                 isProtocolLib = Bukkit.getPluginManager().isPluginEnabled("ProtocolLib");
                 isPaper = true;
                 if(isProtocolLib){
-                    new ProtocolLibBridge(this, vectorGenerator, hologramManager);
+                    ProtocolLibBridge.initProtocolLib();
                 }
             }catch (Exception ignored){
                 getLogger().info("Paper API not found.");
@@ -98,7 +110,7 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         }
 
         logger.log(Level.INFO, "Initializing vector generation...");
-        VectorGenerator vectorGenerator = new VectorGenerator(this);
+        VectorGenerator vectorGenerator = new VectorGenerator();
         ringBuffer = new VectorRingBuffer(50, vectorGenerator);
 
         logger.info("Registering listeners.");
@@ -109,6 +121,12 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         Commands commands = new Commands(this);
         getCommand("di").setExecutor(commands);
         getCommand("di").setTabCompleter(commands);
+
+        //check if server is 1.19.4
+        if(Bukkit.getServer().getVersion().contains("1.19.4")){
+            is1_19_4 = true;
+            logger.info("Server is running 1.19.4.");
+        }
 
         logger.info("Time elapsed: " + (System.currentTimeMillis() - startTimeMili) + "ms");
     }

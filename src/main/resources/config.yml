@@ -13,7 +13,7 @@ damage-indicator:
   sweeping-edge: false              #false to disable damage holograms for mobs hit by sweeping edge damage (may improve performance)
   players: true                     #false to disable damage holograms on player damage
   mobs: true                        #false to disable damage holograms on mob damage
-  indicator-message: "&c- {damage}"          #message that appears in the hologram before the damage amount
+  indicator-message: "&c- {damage}" #message that appears in the hologram before the damage amount
   critical-message: "&4&l&oCrit!"   #extra message that appears when the damage is a critical hit
   lifespan: 1                       #lifespan of hologram in seconds
   velocity:
@@ -39,11 +39,11 @@ damage-indicator:
 # Bukkit colors are compatible with text. Please use '&' as the selector. - https://static.planetminecraft.com/files/resource_media/screenshot/1807/example2-1518839184.png
 heal-indicator:
   enabled: true                     #false to disable heal holograms
-  indicator-message: "&a+ {heal}"          #message that appears in the hologram before the heal amount
+  indicator-message: "&a+ {heal}"   #message that appears in the hologram before the heal amount
   lifespan: 1                       #lifespan of hologram in seconds
   offset:
     x: .5                           #offset for hologram spawn location on x-axis
-    y: 1.15                           #offset for hologram spawn location on y-axis
+    y: 1.15                         #offset for hologram spawn location on y-axis
     z: .5                           #offset for hologram spawn location on z-axis
   particle:
     enabled: true                   #false to disable particles for heal holograms

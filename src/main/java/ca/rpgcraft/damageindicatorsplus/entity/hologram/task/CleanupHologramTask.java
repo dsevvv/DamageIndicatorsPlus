@@ -1,7 +1,7 @@
-package ca.rpgcraft.damageindicatorsplus.tasks;
+package ca.rpgcraft.damageindicatorsplus.entity.hologram.task;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
-import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.HologramManager;
 
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;

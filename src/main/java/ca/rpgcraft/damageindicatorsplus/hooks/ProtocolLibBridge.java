@@ -1,15 +1,16 @@
 package ca.rpgcraft.damageindicatorsplus.hooks;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
-import ca.rpgcraft.damageindicatorsplus.tasks.VectorGenerator;
-import ca.rpgcraft.damageindicatorsplus.utils.HologramManager;
-import ca.rpgcraft.damageindicatorsplus.utils.PlayerDataManager;
+import ca.rpgcraft.damageindicatorsplus.util.VectorGenerator;
+import ca.rpgcraft.damageindicatorsplus.entity.hologram.HologramManager;
+import ca.rpgcraft.damageindicatorsplus.entity.player.data.PlayerDataManager;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -20,18 +21,9 @@ import java.util.List;
 
 public class ProtocolLibBridge {
 
-    private final DamageIndicatorsPlus plugin;
-    private final VectorGenerator vectorGenerator;
-    private final HologramManager hologramManager;
+    private static final DamageIndicatorsPlus plugin = DamageIndicatorsPlus.getInstance();
 
-    public ProtocolLibBridge(DamageIndicatorsPlus plugin, VectorGenerator vectorGenerator, HologramManager hologramManager){
-        this.plugin = plugin;
-        this.vectorGenerator = vectorGenerator;
-        this.hologramManager = hologramManager;
-        initProtocolLib();
-    }
-
-    public void initProtocolLib(){
+    public static void initProtocolLib(){
         plugin.getLogger().info("ProtocolLib found.");
         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.SPAWN_ENTITY) {
@@ -50,16 +42,14 @@ public class ProtocolLibBridge {
                 ArmorStand hologram = (ArmorStand) entity;
                 if(!(hologram.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.CUSTOM))) return;
 
-                FileConfiguration fileConfiguration = playerDataManager.getPlayerDataConfig();
+                hologram.setVisible(false);
+                hologram.setInvisible(true);
 
+                FileConfiguration fileConfiguration = playerDataManager.getPlayerDataConfig();
                 List<String> playerList = fileConfiguration.getStringList("players");
 
-                if(playerList.contains(String.valueOf(p.getUniqueId()))){
+                if(playerList.contains(String.valueOf(p.getUniqueId())))
                     event.setCancelled(true);
-
-                }
-
-                hologram.setVisible(false);
             }
         });
     }

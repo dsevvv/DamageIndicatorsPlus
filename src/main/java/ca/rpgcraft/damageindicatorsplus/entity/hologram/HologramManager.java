@@ -1,4 +1,4 @@
-package ca.rpgcraft.damageindicatorsplus.utils;
+package ca.rpgcraft.damageindicatorsplus.entity.hologram;
 
 import org.bukkit.entity.ArmorStand;
 

@@ -1,4 +1,4 @@
-package ca.rpgcraft.damageindicatorsplus.listeners;
+package ca.rpgcraft.damageindicatorsplus.entity.hologram.listener;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import org.bukkit.NamespacedKey;
