@@ -2,9 +2,9 @@
 
 Are you looking for something a little bit extra to make your SMP feel unique? DamageIndicatorsPlus adds very cool holograms that display the amount of damage done to players and other entities. As well as displaying the amount of health a player is healing! Many configurable options!
 
-There are currently NO COMMANDS OR PERMISSIONS associated with this plugin, you can simply drop this into your plugins folder and you're good to go!
+There are currently few commands and permissions associated with this plugin. However, functionality comes out of the box,so you can simply drop this into your plugins folder and you're good to go!
 
-RECCOMENDED: I highly recommend using [Paper](https://papermc.io/) and [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/). These are both optional dependencies, but if you have them both it will GREATLY improve the feel and performance of the plugin.
+RECCOMENDED: I highly recommend using [Paper](https://papermc.io/). This is optional, but if you use Paper it will GREATLY improve the feel and performance of your server.
 
 # Features
 
@@ -14,8 +14,6 @@ RECCOMENDED: I highly recommend using [Paper](https://papermc.io/) and [Protocol
 * Adds particle effects to heal events.
 * Configure many options of the above features!
 
-# Support
 
-I am working on creating a discord server that will verify spigot users. For now please post in this plugin's discussion with any issues.
 
 ![alt text](https://bstats.org/signatures/bukkit/DamageIndicatorsPlus.svg)
