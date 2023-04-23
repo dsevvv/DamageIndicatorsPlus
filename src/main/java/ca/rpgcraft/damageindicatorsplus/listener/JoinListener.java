@@ -1,4 +1,4 @@
-package ca.rpgcraft.damageindicatorsplus.entity.player.listener;
+package ca.rpgcraft.damageindicatorsplus.listener;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.List;
 
-public class PlayerJoin implements Listener {
+public class JoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){

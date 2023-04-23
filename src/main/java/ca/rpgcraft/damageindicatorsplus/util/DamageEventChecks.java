@@ -1,5 +1,7 @@
 package ca.rpgcraft.damageindicatorsplus.util;
 
+import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
+import ca.rpgcraft.damageindicatorsplus.hooks.WorldGuardBridge;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -40,5 +42,12 @@ public class DamageEventChecks {
 
     public static boolean isIgnored(EntityDamageEvent e){
         return e.isCancelled() || e.getFinalDamage() == 0;
+    }
+
+    public static boolean allowHologramSpawn(Entity entity){
+        if(!DamageIndicatorsPlus.getInstance().isWorldGuard())
+            return true;
+
+        return new WorldGuardBridge().isDIFlag(entity);
     }
 }

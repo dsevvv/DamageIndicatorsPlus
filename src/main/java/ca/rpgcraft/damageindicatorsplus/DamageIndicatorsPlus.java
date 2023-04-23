@@ -1,30 +1,15 @@
 package ca.rpgcraft.damageindicatorsplus;
 
 import ca.rpgcraft.damageindicatorsplus.command.Commands;
-import ca.rpgcraft.damageindicatorsplus.entity.listener.EntityOnEntityDamage;
-import ca.rpgcraft.damageindicatorsplus.entity.listener.EntityOnPlayerDamage;
-import ca.rpgcraft.damageindicatorsplus.entity.listener.PlayerOnEntityDamage;
-import ca.rpgcraft.damageindicatorsplus.entity.player.listener.PlayerDamage;
-import ca.rpgcraft.damageindicatorsplus.entity.player.listener.PlayerOnPlayerDamage;
-import ca.rpgcraft.damageindicatorsplus.hooks.ProtocolLibBridge;
-import ca.rpgcraft.damageindicatorsplus.entity.player.creative.listener.PickItem;
-import ca.rpgcraft.damageindicatorsplus.entity.player.listener.HealEvents;
-import ca.rpgcraft.damageindicatorsplus.entity.hologram.listener.BurnListenerPaper;
-import ca.rpgcraft.damageindicatorsplus.entity.hologram.listener.BurnListenerSpigot;
-import ca.rpgcraft.damageindicatorsplus.entity.player.listener.PlayerJoin;
-import ca.rpgcraft.damageindicatorsplus.util.VectorGenerator;
-import ca.rpgcraft.damageindicatorsplus.entity.hologram.HologramManager;
-
-import ca.rpgcraft.damageindicatorsplus.entity.player.data.PlayerDataManager;
-import ca.rpgcraft.damageindicatorsplus.util.VectorRingBuffer;
-
+import ca.rpgcraft.damageindicatorsplus.listener.DamageListener;
+import ca.rpgcraft.damageindicatorsplus.listener.HealListener;
+import ca.rpgcraft.damageindicatorsplus.data.PlayerDataManager;
+import ca.rpgcraft.damageindicatorsplus.listener.JoinListener;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.MultiLineChart;
-
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.MalformedURLException;
@@ -32,17 +17,14 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class DamageIndicatorsPlus extends JavaPlugin {
 
     private PlayerDataManager playerDataManager;
-    private HologramManager hologramManager;
-    private VectorRingBuffer ringBuffer;
+//    private VectorRingBuffer ringBuffer;
 
     private boolean isPaper;
-    private boolean isProtocolLib;
     private boolean isWorldGuard = false;
     private boolean isDIFlags = false;
     private boolean isPAPI = false;
@@ -56,13 +38,12 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
     public void onEnable() {
         long startTimeMili = System.currentTimeMillis();
 
-        hologramManager = new HologramManager();
         playerDataManager = new PlayerDataManager();
 
         try {
             logger.info("Author: " + new URL("https://www.spigotmc.org/members/dsevvv.1425637/"));
-        } catch (MalformedURLException ignored) {
-        }
+        } catch (MalformedURLException ignored) {}
+
 
         saveDefaultConfig();
         fillMissingConfigBlocks();
@@ -83,14 +64,10 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
             try {
                 Class.forName("io.papermc.paper.event.player.PlayerArmSwingEvent");
                 logger.info("Paper API found.");
-                isProtocolLib = Bukkit.getPluginManager().isPluginEnabled("ProtocolLib");
                 isPaper = true;
-                if(isProtocolLib){
-                    ProtocolLibBridge.initProtocolLib();
-                }
+
             }catch (Exception ignored){
                 getLogger().info("Paper API not found.");
-                isProtocolLib = false;
                 isPaper = false;
             }
         }
@@ -109,9 +86,9 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
             getLogger().info("PlaceholderAPI found.");
         }
 
-        logger.log(Level.INFO, "Initializing vector generation...");
-        VectorGenerator vectorGenerator = new VectorGenerator();
-        ringBuffer = new VectorRingBuffer(50, vectorGenerator);
+//        logger.log(Level.INFO, "Initializing vector generation...");
+//        VectorGenerator vectorGenerator = new VectorGenerator();
+//        ringBuffer = new VectorRingBuffer(50, vectorGenerator);
 
         logger.info("Registering listeners.");
         registerListeners();
@@ -133,27 +110,16 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        logger.info("Removing all holograms...");
-        for(ArmorStand hologram : hologramManager.getHologramList().values()) {
-            hologram.remove();
-        }
+        logger.info("Goodbye!");
     }
 
     private void registerListeners(){
-        //deciding which burn listener to register, depends on if paper is running or not
-        Bukkit.getPluginManager().registerEvents(new PickItem(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
-
-        if(isPaper){
-            Bukkit.getPluginManager().registerEvents(new BurnListenerPaper(this), this);
-        }else {
-            Bukkit.getPluginManager().registerEvents(new BurnListenerSpigot(this), this);
-        }
+        Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
 
         //checking config if damage indicators should be enabled
         if(getConfig().getBoolean("damage-indicator.enabled")){
             logger.info("Damage Indicator Enabled.");
-            enableDamageIndicators();
+            Bukkit.getPluginManager().registerEvents(new DamageListener(this), this);
         }else{
             logger.info("Damage Indicator Disabled.");
         }
@@ -161,23 +127,9 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         //checking config if heal indicators should be enabled
         if(getConfig().getBoolean("heal-indicator.enabled")){
             logger.info("Heal Indicator Enabled.");
-            Bukkit.getPluginManager().registerEvents(new HealEvents(this, hologramManager), this);
+            Bukkit.getPluginManager().registerEvents(new HealListener(this), this);
         }else{
             logger.info("Heal Indicator Disabled.");
-        }
-    }
-
-    private void enableDamageIndicators(){
-        //checking if player indicators are enabled
-        if(getConfig().getBoolean("damage-indicator.players")){
-            Bukkit.getPluginManager().registerEvents(new PlayerDamage(this, hologramManager), this);
-            Bukkit.getPluginManager().registerEvents(new EntityOnPlayerDamage(this, hologramManager), this);
-            Bukkit.getPluginManager().registerEvents(new PlayerOnPlayerDamage(this, hologramManager), this);
-        }
-        //checking if mob indicators are enabled
-        if(getConfig().getBoolean("damage-indicator.mobs")){
-            Bukkit.getPluginManager().registerEvents(new EntityOnEntityDamage(this, hologramManager), this);
-            Bukkit.getPluginManager().registerEvents(new PlayerOnEntityDamage(this, hologramManager), this);
         }
     }
 
@@ -234,10 +186,6 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         return isPaper;
     }
 
-    public boolean isProtocolLib() {
-        return isProtocolLib;
-    }
-
     public boolean isWorldGuard() {
         return isWorldGuard;
     }
@@ -254,9 +202,9 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
         return playerDataManager;
     }
 
-    public VectorRingBuffer getRingBuffer() {
-        return ringBuffer;
-    }
+//    public VectorRingBuffer getRingBuffer() {
+//        return ringBuffer;
+//    }
 
     public static DamageIndicatorsPlus getInstance(){
         return DamageIndicatorsPlus.getPlugin(DamageIndicatorsPlus.class);
@@ -264,9 +212,5 @@ public final class DamageIndicatorsPlus extends JavaPlugin {
 
     public NamespacedKey getHologramKey() {
         return key;
-    }
-
-    public HologramManager getHologramManager() {
-        return hologramManager;
     }
 }

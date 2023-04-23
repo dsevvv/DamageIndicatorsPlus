@@ -1,4 +1,4 @@
-package ca.rpgcraft.damageindicatorsplus.entity.player.data;
+package ca.rpgcraft.damageindicatorsplus.data;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import org.bukkit.configuration.file.FileConfiguration;

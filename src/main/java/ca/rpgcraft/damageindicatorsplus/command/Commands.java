@@ -1,8 +1,7 @@
 package ca.rpgcraft.damageindicatorsplus.command;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
-import ca.rpgcraft.damageindicatorsplus.entity.hologram.task.CleanupHologramTask;
-import ca.rpgcraft.damageindicatorsplus.entity.player.data.PlayerDataManager;
+import ca.rpgcraft.damageindicatorsplus.data.PlayerDataManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,20 +31,6 @@ public class Commands implements CommandExecutor, TabCompleter {
             return false;
         }
         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
-        //clear command
-        if(args[0].equalsIgnoreCase("clear")){
-            if(!(sender instanceof Player player)){
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou must be a player to run this command!"));
-                return false;
-            }
-            if(!player.hasPermission("di.clear")){
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou do not have permission to run this command!"));
-                return false;
-            }
-
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aClearing holograms in world " + player.getWorld().getName()));
-            new CleanupHologramTask(null, DamageIndicatorsPlus.getInstance().getHologramManager()).asyncClearWorld(player.getWorld());
-        }
 
         //toggle command
         if(args[0].equalsIgnoreCase("toggle")){
@@ -88,7 +73,6 @@ public class Commands implements CommandExecutor, TabCompleter {
         if(args.length == 1){
             List<String> completions = new ArrayList<>();
 
-            completions.add("clear");
             completions.add("toggle");
             completions.add("reload");
 
@@ -109,9 +93,6 @@ public class Commands implements CommandExecutor, TabCompleter {
         sender.sendMessage(ChatColor.translateAlternateColorCodes(
                 '&',
                 "&e========== &bDamage Indicators &e=========="));
-        sender.sendMessage(ChatColor.translateAlternateColorCodes(
-                '&',
-                "&e/di clear &7-&a Clears all holograms in the world you are in."));
         sender.sendMessage(ChatColor.translateAlternateColorCodes(
                 '&',
                 "&c/di toggle &7- &aToggles visibility of damage indicators."));
