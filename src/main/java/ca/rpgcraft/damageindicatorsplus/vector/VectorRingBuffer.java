@@ -1,5 +1,6 @@
-package ca.rpgcraft.damageindicatorsplus.util;
+package ca.rpgcraft.damageindicatorsplus.vector;
 
+import ca.rpgcraft.damageindicatorsplus.vector.VectorGenerator;
 import org.bukkit.util.Vector;
 
 public class VectorRingBuffer {

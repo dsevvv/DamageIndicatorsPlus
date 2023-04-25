@@ -1,4 +1,4 @@
-package ca.rpgcraft.damageindicatorsplus.util;
+package ca.rpgcraft.damageindicatorsplus.vector;
 
 import ca.rpgcraft.damageindicatorsplus.DamageIndicatorsPlus;
 import org.bukkit.util.Vector;
